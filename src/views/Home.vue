@@ -65,6 +65,9 @@
 // @ is an alias to /src
 import { mapActions, mapGetters } from "vuex";
 import HelloWorld from "@/components/HelloWorld.vue";
+import Vue from "vue";
+import * as VueAos from "vue-aos";
+Vue.use(VueAos);
 
 export default {
   name: "Home",
@@ -75,28 +78,30 @@ export default {
     ...mapGetters(["later"], mapActions),
   },
   methods: {
-    // ...mapActions(["TODAYS_TODO"]),
+    // ...mapActions(["FILTER_TODO"]),
     Complete_Todo: function (check) {
       let sort = this.todos.filter((item) => item.id == check.id)[0];
       sort.completed = !sort.completed;
+      
       localStorage.clear();
-      localStorage.setItem("store", JSON.stringify(this.today));
+      localStorage.setItem("today", JSON.stringify(this.today));
+      localStorage.setItem("tomorrow", JSON.stringify(this.tomorrow));
+      localStorage.setItem("later", JSON.stringify(this.later));
     },
   },
-  created() {
-    localStorage.setItem("store", JSON.stringify(this.today));
-    if (JSON.parse(localStorage.getItem("store"))) {
-      this.today = JSON.parse(localStorage.getItem("store"))
-    }
-  },
   mounted() {
-    // this.TODAYS_TODO()
-    if (localStorage.getItem("reloaded")) {
-      localStorage.removeItem("reloaded");
-      this.$store.dispatch("FILTER_TODO");
-    } else {
-      localStorage.setItem("reloaded", "1");
-      location.reload();
+    localStorage.setItem("today", JSON.stringify(this.today));
+    localStorage.setItem("tomorrow", JSON.stringify(this.tomorrow));
+    localStorage.setItem("later", JSON.stringify(this.later));
+
+    if (JSON.parse(localStorage.getItem("today"))) {
+      this.today = JSON.parse(localStorage.getItem("today"));
+    }
+    if (JSON.parse(localStorage.getItem("tomorrow"))) {
+      this.tomorrow = JSON.parse(localStorage.getItem("tomorrow"));
+    }
+    if (JSON.parse(localStorage.getItem("later"))) {
+      this.later = JSON.parse(localStorage.getItem("later"));
     }
   },
   components: {

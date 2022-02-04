@@ -7,10 +7,16 @@
     <router-view />
   </div>
 </template>
-
 <script>
 import { style } from "../Styles/CSS/style.css";
-export default {};
+import Vue from "vue";
+import * as VueAos from "vue-aos";
+Vue.use(VueAos);
+export default {
+  mounted() {
+    this.$store.dispatch("FILTER_TODO");
+  },
+};
 </script>
 <style>
 </style>
